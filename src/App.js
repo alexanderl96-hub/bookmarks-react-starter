@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from "axios";
+import {apiURL} from "./util/apiURL.js";
 
 // PAGES
 import Edit from "./Pages/Edit";
@@ -14,13 +16,25 @@ import Show from "./Pages/Show";
 // COMPONENTS
 import NavBar from "./Components/NavBar";
 
+//configuration
+const API_BASE = apiURL()
+
 function App() {
   const [bookmarks, setBookmarks] = useState([]);
 
   const addBookmark = (newBookmark) => {};
   const deleteBookmark = (index) => {};
   const updateBookmark = (updatedBookmark, index) => {};
-  useEffect(() => {}, []);
+
+  //get list of bookmarks for our application
+  // (kind of like a componentDidMount)
+  useEffect(() => {
+    axios.get(`${API_BASE}/bookmarks`).then((res)=>{
+      const { data } = res;
+      console.log(data)
+      setBookmarks(data)
+    })
+  }, []);
   return (
     <div className="App">
       <Router>
